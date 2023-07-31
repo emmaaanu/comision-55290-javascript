@@ -52,7 +52,45 @@ const nombresGatos = {
     "Lia",
   ],
 };
+// Función para obtener una entrada del usuario y validarla
+function obtenerEntradaUsuario(mensaje, opcionesValidas) {
+  let entrada = "";
 
+  while (!opcionesValidas.includes(entrada)) {
+    entrada = prompt(mensaje);
+
+    if (entrada === null) {
+      console.log("No se seleccionó ninguna opción.");
+      return null;
+    } else {
+      entrada = entrada.toUpperCase();
+    }
+
+    if (!opcionesValidas.includes(entrada)) {
+      console.log("Opción no válida.");
+    }
+  }
+
+  return entrada;
+}
+// Función para obtener el tipo de mascota (perro o gato)
+function obtenerTipoMascota() {
+  const tipoMascota = obtenerEntradaUsuario(
+    "¿Qué tipo de mascota deseas generar un nombre? (P) Perro | (G) Gato",
+    ["P", "G"]
+  );
+
+  return tipoMascota === "P" ? "perro" : "gato";
+}
+// Función para obtener el género de la mascota (macho o hembra)
+function obtenerGeneroMascota() {
+  const generoMascota = obtenerEntradaUsuario(
+    "¿Cuál es el género de la mascota? (M) Macho | (H) Hembra",
+    ["M", "H"]
+  );
+
+  return generoMascota === "M" ? "macho" : "hembra";
+}
 // Función para generar nombres únicos aleatorios
 function generarNombresUnicos(nombres, cantidad) {
   const nombresGenerados = new Set();
@@ -69,53 +107,6 @@ function generarNombresUnicos(nombres, cantidad) {
 
   return [...nombresGenerados];
 }
-
-// Función para obtener el tipo de mascota (perro o gato)
-function obtenerTipoMascota() {
-  let tipo = "";
-
-  while (tipo !== "P" && tipo !== "G") {
-    tipo = prompt(
-      "¿Qué tipo de mascota deseas generar un nombre? (P) Perro | (G) Gato"
-    );
-
-    if (tipo === null) {
-      console.log("No se seleccionó ningún tipo de mascota.");
-      return null;
-    } else {
-      tipo = tipo.toUpperCase();
-    }
-
-    if (tipo !== "P" && tipo !== "G") {
-      console.log("Opción de tipo de mascota no válida.");
-    }
-  }
-
-  return tipo === "P" ? "perro" : "gato";
-}
-
-// Función para obtener el género de la mascota (macho o hembra)
-function obtenerGeneroMascota() {
-  let genero = "";
-
-  while (genero !== "M" && genero !== "H") {
-    genero = prompt("¿Cuál es el género de la mascota? (M) Macho | (H) Hembra");
-
-    if (genero === null) {
-      console.log("No se seleccionó ningún género de mascota.");
-      return null;
-    } else {
-      genero = genero.toUpperCase();
-    }
-
-    if (genero !== "M" && genero !== "H") {
-      console.log("Opción de género de mascota no válida.");
-    }
-  }
-
-  return genero === "M" ? "macho" : "hembra";
-}
-
 // Función para generar nombres de mascotas
 function generarNombresMascotas(tipoMascota, generoMascota, cantidadNombres) {
   const nombres = tipoMascota === "perro" ? nombresPerros : nombresGatos;
@@ -123,7 +114,6 @@ function generarNombresMascotas(tipoMascota, generoMascota, cantidadNombres) {
 
   return nombresGenerados;
 }
-
 // Función para manejar el simulador interactivo
 function simuladorNombresMascotas() {
   const tipoMascota = obtenerTipoMascota();
@@ -132,11 +122,10 @@ function simuladorNombresMascotas() {
     const generoMascota = obtenerGeneroMascota();
 
     if (generoMascota) {
-      let cantidadNombres = "";
-      let cantidadNombresNum = 0;
+      let cantidadNombresNum = NaN;
 
       while (isNaN(cantidadNombresNum) || cantidadNombresNum <= 0) {
-        cantidadNombres = prompt("¿Cuántos nombres deseas generar?");
+        const cantidadNombres = prompt("¿Cuántos nombres deseas generar?");
         cantidadNombresNum = parseInt(cantidadNombres);
 
         if (isNaN(cantidadNombresNum) || cantidadNombresNum <= 0) {
