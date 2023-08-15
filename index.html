@@ -11,13 +11,27 @@
     <main>
       <h1>Generador de Nombres para Mascotas</h1>
       <div class="container">
-        <div class="card">
+        <div class="card perro">
           <img src="../assets/img/perro.jpg" alt="" class="Cheetah" />
           <h4>Perro</h4>
+          <select class="genero-mascota">
+            <option value="macho">Macho</option>
+            <option value="hembra">Hembra</option>
+          </select>
+          <input type="number" class="cantidad-nombres" min="1" value="1" />
+          <button class="generar-nombres">Generar Nombres</button>
+          <div class="resultados"></div>
         </div>
-        <div class="card">
+        <div class="card gato">
           <img src="../assets/img/gato.jpg" alt="" class="Cheetah" />
           <h4>Gato</h4>
+          <select class="genero-mascota">
+            <option value="macho">Macho</option>
+            <option value="hembra">Hembra</option>
+          </select>
+          <input type="number" class="cantidad-nombres" min="1" value="1" />
+          <button class="generar-nombres">Generar Nombres</button>
+          <div class="resultados"></div>
         </div>
       </div>
     </main>
