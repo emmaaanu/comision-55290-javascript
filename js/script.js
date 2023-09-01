@@ -79,6 +79,20 @@ function generarNombresMascotas(tipoMascota, generoMascota, cantidadNombres) {
   return nombresGenerados;
 }
 
+function borrarNombres(cardElement) {
+  const tipoMascota = cardElement.classList.contains("perro")
+    ? "perro"
+    : "gato";
+
+  const cardNombresKey =
+    tipoMascota === "perro" ? "nombresGeneradosPerro" : "nombresGeneradosGato";
+
+  localStorage.removeItem(cardNombresKey);
+
+  const resultadosElement = cardElement.querySelector(".resultados");
+  resultadosElement.innerHTML = "Nombres generados: ";
+}
+
 function simuladorNombresMascotas(cardElement) {
   const tipoMascota = cardElement.classList.contains("perro")
     ? "perro"
@@ -89,13 +103,27 @@ function simuladorNombresMascotas(cardElement) {
   );
 
   if (!isNaN(cantidadNombresNum) && cantidadNombresNum > 0) {
-    const nombresGenerados = generarNombresMascotas(
+    const cardNombresKey =
+      tipoMascota === "perro"
+        ? "nombresGeneradosPerro"
+        : "nombresGeneradosGato";
+    const nombresGeneradosAnteriores =
+      JSON.parse(localStorage.getItem(cardNombresKey)) || [];
+    const nuevosNombresGenerados = generarNombresMascotas(
       tipoMascota,
       generoMascota,
       cantidadNombresNum
     );
+
+    const nombresGenerados = [
+      ...nombresGeneradosAnteriores,
+      ...nuevosNombresGenerados,
+    ];
+
+    localStorage.setItem(cardNombresKey, JSON.stringify(nombresGenerados));
+
     const resultadosElement = cardElement.querySelector(".resultados");
-    resultadosElement.innerHTML = `Nombres generados: ${nombresGenerados.join(
+    resultadosElement.innerHTML = `Nombres generados: ${nuevosNombresGenerados.join(
       ", "
     )}`;
   } else {
@@ -110,6 +138,31 @@ perroCard
   .querySelector(".generar-nombres")
   .addEventListener("click", () => simuladorNombresMascotas(perroCard));
 
+perroCard
+  .querySelector(".borrar-nombres")
+  .addEventListener("click", () => borrarNombres(perroCard));
+
 gatoCard
   .querySelector(".generar-nombres")
   .addEventListener("click", () => simuladorNombresMascotas(gatoCard));
+
+gatoCard
+  .querySelector(".borrar-nombres")
+  .addEventListener("click", () => borrarNombres(gatoCard));
+
+window.addEventListener("load", () => {
+  const nombresGeneradosPerro =
+    JSON.parse(localStorage.getItem("nombresGeneradosPerro")) || [];
+  const nombresGeneradosGato =
+    JSON.parse(localStorage.getItem("nombresGeneradosGato")) || [];
+
+  const resultadosElementPerro = perroCard.querySelector(".resultados");
+  resultadosElementPerro.textContent = `Nombres generados: ${nombresGeneradosPerro.join(
+    ", "
+  )}`;
+
+  const resultadosElementGato = gatoCard.querySelector(".resultados");
+  resultadosElementGato.textContent = `Nombres generados: ${nombresGeneradosGato.join(
+    ", "
+  )}`;
+});
